@@ -31,6 +31,34 @@
             </div>
         {% endfor %}
     </div>
+
+    <script>
+        let currentPage = 1;
+        let loading = false;
+        const genre = "{{ genre if genre else '' }}";
+
+        window.addEventListener('scroll', () => {
+            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 100 && !loading) {
+                loading = true;
+                currentPage++;
+                fetch(`/load_more?page=${currentPage}&genre=${genre}`)
+                    .then(res => res.json())
+                    .then(movies => {
+                        const grid = document.querySelector('.movie-grid');
+                        movies.forEach(movie => {
+                            const div = document.createElement('div');
+                            div.className = 'movie';
+                            div.innerHTML = `
+                                <img src="${movie.poster}" alt="${movie.title} poster" width="200">
+                                <p>${movie.title} (${movie.year})</p>
+                            `;
+                            grid.appendChild(div);
+                        });
+                        loading = false;
+                    });
+            }
+        });
+    </script>
 </body>
 
 </html>
