@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Stream House</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+
+<body>
+    <h1>Stream House</h1>
+
+    <form method="get" action="/">
+        <label for="genre">Filter by Genre:</label>
+        <select name="genre" id="genre" onchange="this.form.submit()">
+
+            <option value="">All</option>
+            {% for g in ['Action', 'Comedy', 'Drama', 'Horror', 'Romance', 'Thriller', 'Sci-Fi'] %}
+                <option value="{{ g }}" {% if genre == g %}selected{% endif %}>{{ g }}</option>
+            {% endfor %}
+
+        </select>
+    </form>
+
+    <div class="movie-grid">
+        {% for movie in movies %}
+            <div class="movie">
+                <img src="{{ movie.poster }}" alt="{{ movie.title }} poster" width="200">
+            </div>
+        {% endfor %}
+    </div>
+</body>
+
+</html>
