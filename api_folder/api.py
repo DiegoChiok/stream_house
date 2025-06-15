@@ -8,6 +8,21 @@ load_dotenv()
 #use api key in .env
 API_KEY = os.getenv("WATCHMODE_API_KEY")
 
+
+def get_sources():
+    url = f'https://api.watchmode.com/v1/sources/?apiKey={API_KEY}'
+    response = requests.get(url)
+
+    #fail case: api call fails to get anything so return nothing
+    if response.status_code != 200:
+        return []
+    
+    sources = response.json()
+
+    return sources
+    
+
+
 def get_trending_titles(page=1, genre_filter=None):
     #url for api to form get request
     url = f"https://api.watchmode.com/v1/list-titles/?apiKey={API_KEY}&types=movie&sort_by=popularity_desc&limit=20&page={page}"
@@ -77,10 +92,15 @@ def get_service_titles(page=1, genre_filter=None):
         details_url = f"https://api.watchmode.com/v1/title/{title_id}/details/?apiKey={API_KEY}"
         details_response = requests.get(details_url)
 
-        sources_url = f"https://api.watchmode.com/v1/title/{title_id}/sources/?apiKey={API_KEY}"
-
         #error code if title url gets nothing in return
         if details_response.status_code != 200:
+            continue
+
+        sources_url = f"https://api.watchmode.com/v1/title/{title_id}/sources/?apiKey={API_KEY}"
+        sources_response = requests.get(sources_url)
+
+        #error code if title url gets nothing in return
+        if sources_response.status_code != 200:
             continue
 
         #for each movie store response og poster and genre

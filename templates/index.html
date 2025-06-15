@@ -13,14 +13,12 @@
     <h1>Stream House</h1>
 
     <form method="get" action="/">
-        <label for="genre">Filter by Genre:</label>
-        <select name="genre" id="genre" onchange="this.form.submit()">
-
+        <label for="source">Filter by Streaming Availability:</label>
+        <select name="source" id="source" onchange="this.form.submit()">
             <option value="">All</option>
-            {% for g in ['Action', 'Comedy', 'Drama', 'Horror', 'Romance', 'Thriller', 'Sci-Fi'] %}
-                <option value="{{ g }}" {% if genre == g %}selected{% endif %}>{{ g }}</option>
+            {% for source in sources %}
+                <input type="checkbox" name="sources" value="{{ source.id }}"> {{ source.name }}<br>
             {% endfor %}
-
         </select>
     </form>
 
