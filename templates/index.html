@@ -13,14 +13,16 @@
     <h1>Stream House</h1>
 
     <form method="get" action="/">
-        <label for="source">Filter by Streaming Availability:</label>
-        <select name="source" id="source" onchange="this.form.submit()">
-            <option value="">All</option>
-            {% for source in sources %}
-                <input type="checkbox" name="sources" value="{{ source.id }}"> {{ source.name }}<br>
-            {% endfor %}
-        </select>
+        <label>Filter by Streaming Availability:</label><br>
+        {% for source in sources %}
+            <input type="checkbox" name="sources" value="{{ source.id }}"
+                {% if source.id in selected_sources %}checked{% endif %}>
+            {{ source.name }}<br>
+        {% endfor %}
+        <button type="submit">Apply</button>
     </form>
+
+
 
     <div class="movie-grid">
         {% for movie in movies %}
